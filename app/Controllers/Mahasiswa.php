@@ -2,30 +2,29 @@
 
 namespace App\Controllers;
 
+use App\Models\MahasiswaModel;
 use CodeIgniter\Controller;
 
 class Mahasiswa extends Controller
 {
-    protected $db;
+    protected $mahasiswa;
 
     public function __construct()
     {
-        $this->db = \Config\Database::connect();
+        $this->mahasiswa = new MahasiswaModel();
     }
 
     // Tampilkan semua data
     public function index()
     {
-        $query = $this->db->query("SELECT * FROM mahasiswa ORDER BY id DESC");
-        $data['mahasiswa'] = $query->getResult();
+        $data['mhs'] = $this->mahasiswa->orderBy('nim', 'ASC')->findAll();
         return view('mahasiswa_view', $data);
     }
 
     // Tampilkan detail
     public function detail($id)
     {
-        $query = $this->db->query("SELECT * FROM mahasiswa WHERE id = ?", [$id]);
-        $data['mhs'] = $query->getRow();
+        $data['mhs'] = $this->mahasiswa->find($id);
         return view('mahasiswa_detail', $data);
     }
 
@@ -38,37 +37,29 @@ class Mahasiswa extends Controller
     // Simpan data
     public function store()
     {
-        $nim  = $this->request->getPost('nim');
-        $nama = $this->request->getPost('nama');
-        $umur = $this->request->getPost('umur');
-
-        $this->db->query(
-            "INSERT INTO mahasiswa (nim, nama, umur) VALUES (?, ?, ?)",
-            [$nim, $nama, $umur]
-        );
-
+       $this->mahasiswa->insert([
+        'nim' => $this->request->getPost('nim'),
+        'nama' => $this->request->getPost('nama'),
+        'umur' => $this->request->getPost('umur'),
+       ]);
         return redirect()->to('/mahasiswa');
     }
 
     // Form edit
     public function edit($id)
     {
-        $query = $this->db->query("SELECT * FROM mahasiswa WHERE id = ?", [$id]);
-        $data['mhs'] = $query->getRow();
+        $data['mhs'] = $this->mahasiswa->find($id);
         return view('mahasiswa_edit', $data);
     }
 
     // Update data
     public function update($id)
     {
-        $nim  = $this->request->getPost('nim');
-        $nama = $this->request->getPost('nama');
-        $umur = $this->request->getPost('umur');
-
-        $this->db->query(
-            "UPDATE mahasiswa SET nim = ?, nama = ?, umur = ? WHERE id = ?",
-            [$nim, $nama, $umur, $id]
-        );
+        $this->mahasiswa->update($id, [
+        'nim' => $this->request->getPost('nim'),
+        'nama' => $this->request->getPost('nama'),
+        'umur' => $this->request->getPost('umur'),
+        ]);
 
         return redirect()->to('/mahasiswa');
     }
@@ -76,7 +67,7 @@ class Mahasiswa extends Controller
     // Hapus data
     public function delete($id)
     {
-        $this->db->query("DELETE FROM mahasiswa WHERE id = ?", [$id]);
+        $this->mahasiswa->delete($id);
         return redirect()->to('/mahasiswa');
     }
 
@@ -84,8 +75,10 @@ class Mahasiswa extends Controller
     public function search()
     {
         $keyword = $this->request->getGet('keyword');
-        $query = $this->db->query("SELECT * FROM mahasiswa WHERE nim LIKE ? OR nama LIKE ?", ["%$keyword%", "%$keyword%"]);
-        $data['mahasiswa'] = $query->getResult();
+        $data['mhs'] = $this->mahasiswa
+            ->like('nim', $keyword)
+            ->orLike('nama', $keyword)
+            ->findAll();
         return view('mahasiswa_view', $data);
     }
 }

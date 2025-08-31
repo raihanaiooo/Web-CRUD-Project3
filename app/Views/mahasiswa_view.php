@@ -17,25 +17,26 @@
 
     <table border="1" cellpadding="8">
         <tr>
-            <th>ID</th>
+            <th>No</th>
             <th>NIM</th>
             <th>Nama</th>
             <th>Umur</th>
             <th>Aksi</th>
         </tr>
-        <?php foreach($mahasiswa as $m): ?>
+    <?php $no = 1; ?>
+    <?php foreach($mhs as $m): ?>
         <tr>
-            <td><?= $m->id ?></td>
-            <td><?= $m->nim ?></td>
-            <td><?= $m->nama ?></td> 
-            <td><?= $m->umur ?></td>
+            <td><?= $no++ ?></td>
+            <td><?= $m['nim'] ?></td>
+            <td><?= $m['nama'] ?></td> 
+            <td><?= $m['umur'] ?></td>
             <td>
-                <a href="/mahasiswa/detail/<?= $m->id ?>">Detail</a> | 
-                <a href="/mahasiswa/edit/<?= $m->id ?>">Edit</a> | 
-                <a href="/mahasiswa/delete/<?= $m->id ?>" onclick="return confirm('Yakin hapus?')">Hapus</a>
+                <a href="/mahasiswa/detail/<?= $m['id'] ?>">Detail</a> | 
+                <a href="/mahasiswa/edit/<?= $m['id'] ?>">Edit</a> | 
+                <a href="/mahasiswa/delete/<?= $m['id'] ?>" onclick="return confirm('Yakin hapus?')">Hapus</a>
             </td>
         </tr>
-        <?php endforeach; ?>
+    <?php endforeach; ?>
     </table>
 </body>
 </html>
