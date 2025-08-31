@@ -2,13 +2,16 @@
 <html>
 <head>
     <title>Detail Mahasiswa</title>
+    <link rel="stylesheet" href="<?= base_url('styles.css') ?>">
 </head>
 <body>
+<div class="container">
     <h1>Detail Mahasiswa</h1>
-    <p>ID: <?= $mhs['id'] ?> </p>
-    <p>NIM: <?= $mhs['nim'] ?> </p>
-    <p>Nama: <?= $mhs['nama'] ?> </p>
-    <p>Umur: <?= $mhs['umur'] ?> </p>
-    <a href="/mahasiswa">Kembali</a>
+    <p><strong>NIM:</strong> <?= $mhs['nim'] ?></p>
+    <p><strong>Nama:</strong> <?= $mhs['nama'] ?></p>
+    <p><strong>Umur:</strong> <?= $mhs['umur'] ?></p>
+    <a href="/mahasiswa" class="button button-detail">Kembali</a>
+
+</div>
 </body>
 </html>
