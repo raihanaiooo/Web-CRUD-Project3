@@ -28,4 +28,27 @@ class PhpController extends \CodeIgniter\Controller
     {
         return view('PHP/HTML_PHP/tabel_looping');
     }
+
+    // TABEL
+
+    public function tabel_mhs()
+    {
+        return view('PHP/tabel_mhs');
+    }
+
+    public function tambah()
+    {
+        return view('PHP/tambah');
+    }
+
+        public function edit()
+    {
+        return view('PHP/edit');
+    }
+
+    public function hapus()
+    {
+        return view('PHP/hapus');
+    }
+    
 }
